@@ -13,7 +13,8 @@ struct person
     char sex[8];
     char mail[100];
     char citizen_no[20];
-} void menu();
+};
+void menu();
 void got();
 void start();
 void back();
@@ -42,34 +43,40 @@ void menu()
     printf("\t\t**********WELCOME TO PHONEBOOK**************");
 
     printf("\n\n\t\t\t  MENU\t\t\n\n");
-    printf("\t1.Add New    \t2.List    \t3.Exit    \n\t4.modify \t5.Search\t6.Delete");
+    printf("\t1.Add New    \t2.List    \t3.Exit    \n\t4.modify    \t5.Search    \t6.Delete");
 
-    switch ()
+    switch (getch())
     {
     case '1':
 
         addrecord();
         break;
+
     case '2':
 
         listrecord();
         break;
+
     case '3':
 
         exit(0);
         break;
+
     case '4':
 
         modifyrecord();
         break;
+
     case '5':
 
         searchrecord();
         break;
+
     case '6':
 
         deleterecord();
         break;
+
     default:
 
         system("cls");
@@ -92,18 +99,20 @@ void addrecord()
     got(p.address);
     printf("\n Enter father name: ");
     got(p.father_name);
-    printf("\n Enter ,mother_name: ");
+    printf("\n Enter mother_name: ");
     got(p.mother_name);
     printf("\n Enter phone no.:");
     scanf("%ld", &p.mble_no);
     printf("Enter sex:");
+    got(p.sex);
+    printf("\n Enter E_mail:");
     got(p.mail);
     printf("\n Enter citizen no:");
     got(p.citizen_no);
     fwrite((&p, sizeof(p), 1, f));
 
     fflush(stdin);
-    printf("\nrecord saved");
+    printf("\nRecord saved");
 
     fclose(f);
 
@@ -128,13 +137,13 @@ void listrecord()
     while (fread(&p, sizeof(p), 1, f) == 1)
     {
         printf("\n\n\n YOUR RECORD IS \n\n ");
-                printf("\nName=%s\nAdress=%s\nfather name=%s\nMother name=%s\nMobile no=%ld\nSex=%s\nE-mail=%s\nCitizen
+                printf("\nName=%s\nAddress=%s\nfather name=%s\nMother name=%s\nMobile no=%ld\nSex=%s\nE-mail=%s\nCitizen
                 no=%s",p.name,p.address,p.father_name,p.mother_name,p.mble_no,p.sex,p.mail,p.citision_no);
 
                     getch();
                     system("cls");
     }
-    fclose(F);
+    fclose(f);
     printf(" Enter any key");
     getch();
     system("cls");
@@ -159,7 +168,7 @@ void searchrecord()
         if (strcmp(p.name, name) == 0)
         {
             printf("\nDetail Information about %s", name);
-            printf("\nName:%s\naddress:%s\nfather name:%s\nMother no.:%ld\nsex:%s\nE-mail:%s\nCitizen no.:%s", p.name, p.address, p.father_name, p.mother_name, p.mble_no, p.sex, p.mail, p.citizen_no);
+            printf("\nName:%s\nAddress:%s\nfather name:%s\nMother name:%s\nMobile no.:%ld\nsex:%s\nE-mail:%s\nCitizen no.:%s", p.name, p.address, p.father_name, p.mother_name, p.mble_no, p.sex, p.mail, p.citizen_no);
         }
         else
         {
@@ -195,8 +204,8 @@ void deleterecord()
             printf("Enter CONTACTS NAME:");
             got(name);
 
-            fflush(stdlin);
-            while (fread(&p, sizeof(p) 1, f) == 1)
+            fflush(stdin);
+            while (fread(&p, sizeof(p), 1, f) == 1)
             {
                 if (strcmp(p.name, name) != 0)
                     fwrite(&p, sizeof(p), 1, ft);
@@ -240,6 +249,81 @@ void modifyrecord()
     else
     {
         system("cls");
-        printf("\nEnter CONTACTS NAME TO MODIfY")
+        printf("\nEnter CONTACTS NAME TO MODIfY:\n");
+        got(name);
+        while (fread(&p, sizeof(p), 1, f) == 1)
+        {
+            if (strcmp(name, p.name) == 0)
+            {
+
+                printf("\n Enter name:");
+                got(s.name);
+                printf("\n Enter the address:");
+                got(s.address);
+                printf("\n Enter father name:");
+                got(s.father_name);
+                printf("\n Enter mother name:");
+                got(s.mother_name);
+                printf("\n Enter phone no.");
+                scanf("%ld", &s.mble_no);
+                printf("\n Enter sex:");
+                got(s.sex);
+                printf("\n Enter E_mail:");
+                got(s.mail);
+                printf("\n Enter citizen no.\n");
+                got(s.citizen_no);
+                fseek(f, -sizeof(p), SEEK_CUR);
+                fwrite(&s, sizeof(p), 1, f);
+                flag = 1;
+                break;
+            }
+            fflush(stdin);
+        }
+        if (flag == 1)
+        {
+            printf("\n your data id modified");
+        }
+        else
+        {
+            printf("\n data is not found");
+        }
+        fclose(f);
     }
+
+    printf("\n Enter any key");
+    getch();
+    system("cls");
+    menu();
+}
+
+void got(char *name)
+{
+    int i = 0, j;
+    char c, ch;
+    do
+    {
+        c = getch();
+        if (c != 8 && c != 13)
+        {
+            *(name + 1) = c;
+            putch(c);
+            i++;
+        }
+        if (c == 8)
+        {
+            if (i > 0)
+            {
+                i--;
+            }
+            //printf("h");
+            system("cls");
+            for(j=0;j<i;j++)
+            {
+                ch=*(name+j);
+                putch(ch);
+            }
+        }
+    } while(c!=13);
+
+        *(name+i)='\0';
 }
