@@ -1,1 +1,1 @@
-C language project phonebook derectory
+PhoneBook Directory project in C language
